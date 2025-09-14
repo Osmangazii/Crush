@@ -5,40 +5,48 @@ import React, { useState } from 'react';
 import {
     Alert,
     SafeAreaView,
+    ScrollView,
     StyleSheet,
     Text,
     TextInput,
     TouchableOpacity,
-    View,
+    View
 } from 'react-native';
 
-export default function LoginScreen() {
+export default function SignUpScreen() {
   const [formData, setFormData] = useState({
-    username: '',
+    name: '',
+    phone: '',
     password: '',
+    confirmPassword: '',
   });
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleLogin = () => {
-    if (!formData.username || !formData.password) {
+  const handleSignUp = () => {
+    if (!formData.name || !formData.phone || !formData.password || !formData.confirmPassword) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
     
-    Alert.alert('Success', 'Login successful!', [
+    if (formData.password !== formData.confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match');
+      return;
+    }
+    
+    Alert.alert('Success', 'Account created successfully!', [
       { text: 'OK', onPress: () => router.replace('/(tabs)/home') }
     ]);
   };
 
-  const handleSignUp = () => {
-    router.push('/signup');
+  const handleSkip = () => {
+    router.replace('/(tabs)/home');
   };
 
-  const handleForgotPassword = () => {
-    Alert.alert('Forgot Password', 'Password reset functionality will be implemented');
+  const handleLogin = () => {
+    router.push('/');
   };
 
   const handleSocialLogin = (platform: string) => {
@@ -47,8 +55,9 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header Section with Solid Background */}
-      <View style={styles.headerSection}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* Header Section with Solid Background */}
+        <View style={styles.headerSection}>
         <View style={styles.logoContainer}>
           {/* Main Dollar Sign Icon */}
           <View style={styles.dollarIconContainer}>
@@ -57,87 +66,100 @@ export default function LoginScreen() {
           {/* Crush Text */}
           <Text style={styles.crushText}>Cru$h</Text>
         </View>
-        
-        {/* Welcome Message */}
-        <Text style={styles.welcomeText}>Welcome back. Use your username and password to log in</Text>
-      </View>
+        </View>
 
-      {/* Body Section */}
-      <View style={styles.bodySection}>
-        {/* Username Input */}
-        <TextInput
-          style={styles.input}
-          placeholder="Username"
-          placeholderTextColor="#999"
-          value={formData.username}
-          onChangeText={(value) => handleInputChange('username', value)}
-        />
-        
-        {/* Password Input */}
-        <View style={styles.passwordContainer}>
+        {/* Form Section */}
+        <View style={styles.formSection}>
+          {/* Skip Button */}
+          <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
+            <Text style={styles.skipButtonText}>Skip for now</Text>
+          </TouchableOpacity>
           <TextInput
             style={styles.input}
-            placeholder="Password"
+            placeholder="Name"
+            placeholderTextColor="#999"
+            value={formData.name}
+            onChangeText={(value) => handleInputChange('name', value)}
+          />
+          
+          <TextInput
+            style={styles.input}
+            placeholder="Phone Number"
+            placeholderTextColor="#999"
+            value={formData.phone}
+            onChangeText={(value) => handleInputChange('phone', value)}
+            keyboardType="phone-pad"
+          />
+          
+          <TextInput
+            style={styles.input}
+            placeholder="Create Password"
             placeholderTextColor="#999"
             value={formData.password}
             onChangeText={(value) => handleInputChange('password', value)}
             secureTextEntry
           />
-          <TouchableOpacity onPress={handleForgotPassword} style={styles.forgotPasswordButton}>
-            <Text style={styles.forgotPasswordText}>Forgot Password</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Log In Button */}
-        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-          <LinearGradient
-            colors={['#FF69B4', '#FF1493']}
-            style={styles.buttonGradient}
-          >
-            <Text style={styles.loginButtonText}>Log In</Text>
-          </LinearGradient>
-        </TouchableOpacity>
-
-        {/* Social Login Section */}
-        <Text style={styles.orText}>Or Login With</Text>
-        
-        <View style={styles.socialButtonsContainer}>
-          <TouchableOpacity 
-            style={styles.socialButton} 
-            onPress={() => handleSocialLogin('Google')}
-          >
-            <View style={styles.googleIcon}>
-              <Text style={styles.googleText}>G</Text>
-            </View>
-          </TouchableOpacity>
           
-          <TouchableOpacity 
-            style={styles.socialButton} 
-            onPress={() => handleSocialLogin('Instagram')}
-          >
-            <View style={styles.instagramIcon}>
-              <IconSymbol name="camera.fill" size={24} color="#E4405F" />
-            </View>
-          </TouchableOpacity>
-          
-          <TouchableOpacity 
-            style={styles.socialButton} 
-            onPress={() => handleSocialLogin('X')}
-          >
-            <View style={styles.xIcon}>
-              <Text style={styles.xText}>X</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+          <TextInput
+            style={styles.input}
+            placeholder="Re-type Password"
+            placeholderTextColor="#999"
+            value={formData.confirmPassword}
+            onChangeText={(value) => handleInputChange('confirmPassword', value)}
+            secureTextEntry
+          />
 
-        {/* Sign Up Prompt */}
-        <View style={styles.signUpContainer}>
-          <Text style={styles.signUpPromptText}>Don't have an account? </Text>
-          <TouchableOpacity onPress={handleSignUp}>
-            <Text style={styles.signUpLinkText}>Sign up</Text>
+          {/* Sign Up Button */}
+          <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
+            <LinearGradient
+              colors={['#FF69B4', '#FF1493']}
+              style={styles.buttonGradient}
+            >
+              <Text style={styles.signUpButtonText}>Sign Up</Text>
+            </LinearGradient>
           </TouchableOpacity>
+
+          {/* Social Login Section */}
+          <Text style={styles.orText}>Or Sign Up With</Text>
+          
+          <View style={styles.socialButtonsContainer}>
+            <TouchableOpacity 
+              style={styles.socialButton} 
+              onPress={() => handleSocialLogin('Google')}
+            >
+              <View style={styles.googleIcon}>
+                <Text style={styles.googleText}>G</Text>
+              </View>
+            </TouchableOpacity>
+            
+            <TouchableOpacity 
+              style={styles.socialButton} 
+              onPress={() => handleSocialLogin('Instagram')}
+            >
+              <View style={styles.instagramIcon}>
+                <IconSymbol name="camera.fill" size={24} color="#E4405F" />
+              </View>
+            </TouchableOpacity>
+            
+            <TouchableOpacity 
+              style={styles.socialButton} 
+              onPress={() => handleSocialLogin('X')}
+            >
+              <View style={styles.xIcon}>
+                <Text style={styles.xText}>X</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          {/* Login Prompt */}
+          <View style={styles.loginContainer}>
+            <Text style={styles.loginPromptText}>Already have an account? </Text>
+            <TouchableOpacity onPress={handleLogin}>
+              <Text style={styles.loginLinkText}>Log in</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -147,8 +169,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#dadbe4',
   },
+  scrollContent: {
+    flexGrow: 1,
+  },
   headerSection: {
-    flex: 0.4,
+    height: 300,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
@@ -188,19 +213,21 @@ const styles = StyleSheet.create({
     color: '#333',
     marginLeft: 20,
   },
-  welcomeText: {
-    fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
-    marginTop: 20,
-    paddingHorizontal: 40,
-    lineHeight: 22,
-  },
-  bodySection: {
-    flex: 0.6,
-    backgroundColor: '#dadbe4',
+  formSection: {
+    flex: 1,
     paddingHorizontal: 30,
     paddingTop: 40,
+    paddingBottom: 30,
+    backgroundColor: '#dadbe4',
+  },
+  skipButton: {
+    alignSelf: 'flex-end',
+    marginBottom: 20,
+  },
+  skipButtonText: {
+    color: '#666',
+    fontSize: 16,
+    textDecorationLine: 'underline',
   },
   input: {
     backgroundColor: 'white',
@@ -215,22 +242,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-  passwordContainer: {
-    position: 'relative',
-    marginBottom: 20,
-  },
-  forgotPasswordButton: {
-    position: 'absolute',
-    right: 15,
-    top: 15,
-  },
-  forgotPasswordText: {
-    color: '#666',
-    fontSize: 14,
-  },
-  loginButton: {
-    width: '100%',
-    marginBottom: 20,
+  signUpButton: {
+    marginTop: 10,
+    marginBottom: 30,
     borderRadius: 12,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -242,8 +256,10 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
     borderRadius: 12,
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#000',
   },
-  loginButtonText: {
+  signUpButtonText: {
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
@@ -258,7 +274,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingHorizontal: 20,
-    marginBottom: 30,
   },
   socialButton: {
     width: 60,
@@ -272,8 +287,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    borderWidth: 1,
-    borderColor: '#ddd',
   },
   googleIcon: {
     width: 40,
@@ -282,6 +295,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ddd',
   },
   googleText: {
     fontSize: 20,
@@ -309,16 +324,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#000',
   },
-  signUpContainer: {
+  loginContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 20,
   },
-  signUpPromptText: {
+  loginPromptText: {
     color: '#666',
     fontSize: 16,
   },
-  signUpLinkText: {
+  loginLinkText: {
     color: '#333',
     fontSize: 16,
     fontWeight: 'bold',

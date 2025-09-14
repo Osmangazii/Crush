@@ -1,0 +1,7 @@
+<svg width="108" height="108" viewBox="0 0 108 108" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Main Pink Circle -->
+  <circle cx="54" cy="54" r="20" fill="#FF1493" stroke="white" stroke-width="2"/>
+  
+  <!-- Dollar Sign -->
+  <text x="54" y="62" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="white">$</text>
+</svg>

@@ -1,0 +1,10 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1024" height="1024" fill="#dadbe4"/>
+  
+  <!-- Main Pink Circle -->
+  <circle cx="512" cy="512" r="200" fill="#FF1493" stroke="white" stroke-width="8"/>
+  
+  <!-- Dollar Sign -->
+  <text x="512" y="580" font-family="Arial, sans-serif" font-size="200" font-weight="bold" text-anchor="middle" fill="white">$</text>
+</svg>
